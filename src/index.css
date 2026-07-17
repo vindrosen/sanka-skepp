@@ -1,0 +1,397 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   Designtokens. Mörkt tema är standard; ljust tema via data-theme="light".
+--------------------------------------------------------------------------- */
+:root,
+:root[data-theme='dark'] {
+  --bg-deep: #050e1f;
+  --bg-grad-a: #071a33;
+  --bg-grad-b: #04101f;
+  --panel: rgba(11, 30, 60, 0.62);
+  --panel-solid: #0b1e3c;
+  --panel-border: rgba(64, 180, 248, 0.28);
+  --panel-glow: rgba(56, 189, 248, 0.12);
+  --neon: #38bdf8;
+  --neon-strong: #7dd3fc;
+  --gold: #fbbf24;
+  --text: #e4f3ff;
+  --muted: #8aa5c5;
+  --danger: #f87171;
+  --hit: #fb923c;
+  --grid-line: rgba(96, 200, 255, 0.16);
+  --cell: rgba(10, 34, 66, 0.45);
+  --cell-hover: rgba(56, 189, 248, 0.28);
+  --water-hint: rgba(125, 211, 252, 0.09);
+}
+
+:root[data-theme='light'] {
+  --bg-deep: #bcd9f0;
+  --bg-grad-a: #cfe6f7;
+  --bg-grad-b: #9dc4e3;
+  --panel: rgba(255, 255, 255, 0.6);
+  --panel-solid: #eaf4fc;
+  --panel-border: rgba(3, 105, 161, 0.3);
+  --panel-glow: rgba(3, 105, 161, 0.08);
+  --neon: #0369a1;
+  --neon-strong: #0284c7;
+  --gold: #b45309;
+  --text: #0c2340;
+  --muted: #48617f;
+  --danger: #dc2626;
+  --hit: #ea580c;
+  --grid-line: rgba(3, 105, 161, 0.22);
+  --cell: rgba(255, 255, 255, 0.35);
+  --cell-hover: rgba(2, 132, 199, 0.25);
+  --water-hint: rgba(3, 105, 161, 0.07);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-deep);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Havsbakgrund: gradient + diskreta drivande vågband. */
+.ocean-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(120% 90% at 50% 0%, var(--bg-grad-a) 0%, var(--bg-grad-b) 55%, var(--bg-deep) 100%);
+}
+
+.ocean-bg::before,
+.ocean-bg::after {
+  content: '';
+  position: absolute;
+  inset: -50% -20%;
+  background:
+    repeating-radial-gradient(
+      ellipse 90% 24% at 50% 50%,
+      transparent 0 90px,
+      var(--water-hint) 90px 96px,
+      transparent 96px 220px
+    );
+  animation: ocean-drift 26s linear infinite;
+  opacity: 0.8;
+}
+
+.ocean-bg::after {
+  animation-duration: 41s;
+  animation-direction: reverse;
+  opacity: 0.5;
+}
+
+@keyframes ocean-drift {
+  from {
+    transform: translate3d(-2%, -1%, 0) rotate(0.001deg);
+  }
+  50% {
+    transform: translate3d(2%, 1.5%, 0) rotate(0.001deg);
+  }
+  to {
+    transform: translate3d(-2%, -1%, 0) rotate(0.001deg);
+  }
+}
+
+/* Glasmorphism-panel med neonram. */
+.glass {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 1rem;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+    0 8px 32px rgba(0, 0, 0, 0.35),
+    0 0 24px var(--panel-glow);
+}
+
+/* Neonknapp. */
+.neon-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  border: 1px solid var(--panel-border);
+  border-radius: 0.8rem;
+  background: linear-gradient(180deg, rgba(56, 189, 248, 0.14), rgba(56, 189, 248, 0.04));
+  color: var(--text);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.neon-btn:hover {
+  border-color: var(--neon);
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.35);
+  transform: translateY(-1px);
+}
+
+.neon-btn:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.neon-btn--primary {
+  background: linear-gradient(180deg, rgba(251, 191, 36, 0.28), rgba(251, 191, 36, 0.1));
+  border-color: rgba(251, 191, 36, 0.5);
+}
+
+.neon-btn--primary:hover {
+  border-color: var(--gold);
+  box-shadow: 0 0 18px rgba(251, 191, 36, 0.4);
+}
+
+.neon-btn--danger {
+  background: linear-gradient(180deg, rgba(248, 113, 113, 0.22), rgba(248, 113, 113, 0.06));
+  border-color: rgba(248, 113, 113, 0.45);
+}
+
+.neon-btn--danger:hover {
+  border-color: var(--danger);
+  box-shadow: 0 0 18px rgba(248, 113, 113, 0.35);
+}
+
+.neon-btn:disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+/* Rubrik med subtil neonglöd. */
+.neon-title {
+  text-shadow:
+    0 0 18px rgba(56, 189, 248, 0.55),
+    0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* ---------------------------------------------------------------------------
+   Speleffekter
+--------------------------------------------------------------------------- */
+
+/* Skakning av brädet vid träff. */
+@keyframes board-shake {
+  0%, 100% { transform: translate(0, 0); }
+  15% { transform: translate(-5px, 3px); }
+  30% { transform: translate(4px, -3px); }
+  45% { transform: translate(-3px, -2px); }
+  60% { transform: translate(3px, 2px); }
+  75% { transform: translate(-2px, 1px); }
+}
+
+.anim-on .board-shake {
+  animation: board-shake 0.45s ease-out;
+}
+
+/* Explosion vid träff: sprite som växer och tonar bort. */
+@keyframes fx-explode {
+  0% { transform: scale(0.15); opacity: 0; }
+  18% { transform: scale(0.9); opacity: 1; }
+  60% { transform: scale(1.25); opacity: 0.9; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.anim-on .fx-explosion {
+  animation: fx-explode 0.9s ease-out forwards;
+}
+
+/* Kvarvarande eldglöd i träffade celler. */
+@keyframes fx-flicker {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(0.92); }
+}
+
+.fx-fire {
+  background: radial-gradient(circle at 50% 60%, rgba(255, 200, 80, 0.95) 0%, rgba(251, 113, 36, 0.8) 35%, rgba(190, 40, 20, 0.4) 65%, transparent 78%);
+  filter: blur(0.5px);
+}
+
+.anim-on .fx-fire {
+  animation: fx-flicker 1.1s ease-in-out infinite;
+}
+
+/* Vattenstänk vid miss. */
+@keyframes fx-splash-up {
+  0% { transform: scale(0.2) translateY(20%); opacity: 0; }
+  25% { transform: scale(1) translateY(-8%); opacity: 1; }
+  100% { transform: scale(1.15) translateY(-25%); opacity: 0; }
+}
+
+.anim-on .fx-splash {
+  animation: fx-splash-up 0.8s ease-out forwards;
+}
+
+/* Ringar i vattnet efter miss. */
+@keyframes fx-ripple {
+  0% { transform: scale(0.25); opacity: 0.9; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+
+.fx-ripple {
+  border: 2px solid rgba(125, 211, 252, 0.8);
+  border-radius: 9999px;
+}
+
+.anim-on .fx-ripple {
+  animation: fx-ripple 1s ease-out forwards;
+}
+
+.anim-on .fx-ripple--late {
+  animation-delay: 0.25s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+/* Missmarkör (liten prick) som ligger kvar. */
+.miss-dot {
+  background: radial-gradient(circle, rgba(148, 197, 233, 0.9) 0%, rgba(148, 197, 233, 0.25) 55%, transparent 70%);
+  border-radius: 9999px;
+}
+
+/* Rök som stiger från sänkta fartyg. */
+@keyframes fx-smoke-rise {
+  0% { transform: translateY(15%) scale(0.6); opacity: 0; }
+  25% { opacity: 0.75; }
+  100% { transform: translateY(-120%) scale(1.5); opacity: 0; }
+}
+
+.fx-smoke {
+  background: radial-gradient(circle, rgba(90, 100, 115, 0.85) 0%, rgba(60, 70, 85, 0.45) 55%, transparent 75%);
+  border-radius: 9999px;
+  filter: blur(2px);
+}
+
+.anim-on .fx-smoke {
+  animation: fx-smoke-rise 2.2s ease-out infinite;
+}
+
+.anim-on .fx-smoke--slow {
+  animation-duration: 3s;
+  animation-delay: 0.8s;
+}
+
+/* Sänkt fartyg sjunker under ytan. */
+@keyframes ship-sink {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; filter: brightness(1); }
+  35% { transform: translateY(6%) rotate(2.5deg); opacity: 1; filter: brightness(0.75); }
+  100% { transform: translateY(30%) rotate(5deg); opacity: 0.28; filter: brightness(0.4) saturate(0.4); }
+}
+
+.anim-on .ship-sunk {
+  animation: ship-sink 2s ease-in forwards;
+}
+
+.ship-sunk {
+  opacity: 0.28;
+  filter: brightness(0.4) saturate(0.4);
+}
+
+/* Stor explosion vid sänkning. */
+@keyframes fx-big-explode {
+  0% { transform: scale(0.2); opacity: 0; }
+  15% { transform: scale(1.1); opacity: 1; }
+  55% { transform: scale(1.5); opacity: 0.85; }
+  100% { transform: scale(2.1); opacity: 0; }
+}
+
+.anim-on .fx-big-explosion {
+  animation: fx-big-explode 1.4s ease-out forwards;
+}
+
+/* Siktesmarkör som pulserar på hovrad cell. */
+@keyframes target-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.12); opacity: 0.6; }
+}
+
+.anim-on .target-pulse {
+  animation: target-pulse 1s ease-in-out infinite;
+}
+
+/* Mjuk gungning för fartyg i dockan. */
+@keyframes gentle-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.anim-on .gentle-float {
+  animation: gentle-float 3.2s ease-in-out infinite;
+}
+
+/* Inträdesanimation för paneler. */
+@keyframes panel-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.anim-on .panel-in {
+  animation: panel-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Bannern som visar Träff!/Miss/Sänkt. */
+@keyframes banner-pop {
+  0% { transform: translateY(8px) scale(0.9); opacity: 0; }
+  20% { transform: translateY(0) scale(1.04); opacity: 1; }
+  80% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-6px) scale(0.98); opacity: 0; }
+}
+
+.anim-on .banner-pop {
+  animation: banner-pop 1.6s ease-out forwards;
+}
+
+/* Segerglans på resultatskärmen. */
+@keyframes trophy-glow {
+  0%, 100% { filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.55)); transform: scale(1); }
+  50% { filter: drop-shadow(0 0 26px rgba(251, 191, 36, 0.9)); transform: scale(1.05); }
+}
+
+.anim-on .trophy-glow {
+  animation: trophy-glow 2s ease-in-out infinite;
+}
+
+/* Radar-svep i AI-tänker-indikatorn. */
+@keyframes radar-sweep {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.anim-on .radar-sweep {
+  animation: radar-sweep 1.6s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+/* Prestationstoast. */
+@keyframes toast-in {
+  0% { transform: translateY(120%); opacity: 0; }
+  12% { transform: translateY(0); opacity: 1; }
+  88% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(120%); opacity: 0; }
+}
+
+.anim-on .toast-in {
+  animation: toast-in 3.4s ease both;
+}
+
+/* Utan animationer: allt statiskt men fullt synligt. */
+:root:not(.anim-on) .fx-explosion,
+:root:not(.anim-on) .fx-splash,
+:root:not(.anim-on) .fx-big-explosion {
+  display: none;
+}
