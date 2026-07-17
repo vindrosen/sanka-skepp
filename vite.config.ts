@@ -5,6 +5,8 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Publiceras på GitHub Pages under https://vindrosen.github.io/sanka-skepp/
+  base: '/sanka-skepp/',
   plugins: [
     react(),
     tailwindcss(),

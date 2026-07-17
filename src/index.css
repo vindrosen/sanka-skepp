@@ -104,12 +104,13 @@ body {
   }
 }
 
-/* Genererat havsfoto som ligger diskret ovanpå gradienten. */
+/* Genererat havsfoto som ligger diskret ovanpå gradienten.
+   OBS: bilden sätts som inline-style i App.tsx (via asset-hjälpen) så att
+   sökvägen följer Vites base-URL, t.ex. på GitHub Pages. */
 .ocean-photo {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background-image: url('/assets/generated/bg-ocean-night.webp');
   background-size: cover;
   background-position: center;
   opacity: 0.4;
@@ -117,7 +118,6 @@ body {
 }
 
 :root[data-theme='light'] .ocean-photo {
-  background-image: url('/assets/generated/bg-ocean-day.webp');
   opacity: 0.5;
 }
 

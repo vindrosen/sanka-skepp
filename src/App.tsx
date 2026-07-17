@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { asset } from './assets'
 import { sound } from './audio/sound'
 import { AchievementsScreen } from './components/screens/AchievementsScreen'
 import { GameScreen } from './components/screens/GameScreen'
@@ -47,7 +48,11 @@ export default function App() {
   return (
     <div className="flex min-h-full flex-col">
       <div className="ocean-bg" aria-hidden />
-      <div className="ocean-photo" aria-hidden />
+      <div
+        className="ocean-photo"
+        style={{ backgroundImage: `url(${asset(theme === 'light' ? 'bg-ocean-day.webp' : 'bg-ocean-night.webp')})` }}
+        aria-hidden
+      />
       {screen === 'menu' && <MenuScreen />}
       {screen === 'placement' && <PlacementScreen />}
       {screen === 'game' && <GameScreen />}

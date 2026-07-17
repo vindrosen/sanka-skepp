@@ -3,5 +3,7 @@ dist/
 dev-dist/
 # Råa AI-genererade källbilder – de optimerade versionerna ligger i public/
 assets/generated/
+# Playwright MCP-testartefakter
+.playwright-mcp/
 *.local
 .DS_Store
