@@ -32,6 +32,8 @@ export interface PlayerSlot {
 /** Senaste skotthändelsen – används av UI för animationer och effekter. */
 export interface LastEvent {
   seq: number
+  /** Tidsstämpel (ms) – låter UI:t skilja färska händelser från gamla. */
+  at: number
   attacker: PlayerId
   target: PlayerId
   row: number
@@ -162,6 +164,7 @@ export const useGame = create<GameStore>((set, get) => {
     set({
       lastEvent: {
         seq: ++eventSeq,
+        at: Date.now(),
         attacker,
         target: targetId,
         row,

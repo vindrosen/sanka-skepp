@@ -47,6 +47,7 @@ export default function App() {
   return (
     <div className="flex min-h-full flex-col">
       <div className="ocean-bg" aria-hidden />
+      <div className="ocean-photo" aria-hidden />
       {screen === 'menu' && <MenuScreen />}
       {screen === 'placement' && <PlacementScreen />}
       {screen === 'game' && <GameScreen />}

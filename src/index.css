@@ -104,6 +104,34 @@ body {
   }
 }
 
+/* Genererat havsfoto som ligger diskret ovanpå gradienten. */
+.ocean-photo {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: url('/assets/generated/bg-ocean-night.webp');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+:root[data-theme='light'] .ocean-photo {
+  background-image: url('/assets/generated/bg-ocean-day.webp');
+  opacity: 0.5;
+}
+
+/* Fotolager för enskilda skärmar (storm vid förlust, dimma vid överlämning). */
+.screen-photo {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
 /* Glasmorphism-panel med neonram. */
 .glass {
   background: var(--panel);

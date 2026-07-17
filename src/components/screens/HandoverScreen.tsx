@@ -1,3 +1,4 @@
+import { asset } from '../../assets'
 import { useTranslation } from '../../i18n/useTranslation'
 import { useGame } from '../../state/gameStore'
 import { GameIcon } from '../ui/GameIcon'
@@ -13,6 +14,7 @@ export function HandoverScreen() {
 
   return (
     <div className="flex min-h-full flex-1 items-center justify-center p-4">
+      <div className="screen-photo" style={{ backgroundImage: `url(${asset('bg-fog.webp')})` }} aria-hidden />
       <div className="glass panel-in w-full max-w-sm p-8 text-center">
         <GameIcon name="sonar" fallback="🔄" className="mx-auto mb-4 h-16 w-16" />
         <h1 className="neon-title mb-2 text-2xl font-bold">{t('handoverTitle')}</h1>

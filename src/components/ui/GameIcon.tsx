@@ -23,7 +23,7 @@ export function GameIcon({ name, className = 'h-6 w-6', alt = '', fallback }: Ga
   }
   return (
     <img
-      src={asset(`icon-${name}.png`)}
+      src={asset(`icon-${name}.webp`)}
       alt={alt}
       aria-hidden={alt === ''}
       draggable={false}

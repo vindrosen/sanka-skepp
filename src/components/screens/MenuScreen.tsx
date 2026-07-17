@@ -26,7 +26,7 @@ export function MenuScreen() {
         {/* Hjältebild med titel */}
         <div className="relative h-52 sm:h-64">
           <img
-            src={asset('bg-menu.png')}
+            src={asset('bg-menu.webp')}
             alt=""
             className="h-full w-full object-cover object-center"
             onError={(e) => ((e.target as HTMLImageElement).style.display = 'none')}

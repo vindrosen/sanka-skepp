@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { shipSprite } from '../../assets'
 import { isSunk, shipsRemaining } from '../../game/engine'
 import { SHIP_DEFS } from '../../game/constants'
@@ -50,6 +50,17 @@ export function GameScreen() {
   const fire = useGame((s) => s.fire)
   const abandonMatch = useGame((s) => s.abandonMatch)
   const [confirmLeave, setConfirmLeave] = useState(false)
+
+  // Bannern visas bara för färska händelser och döljs sedan av en timer,
+  // så att den inte blir kvar när animationer är avstängda eller efter
+  // en överlämning i tvåspelarläget.
+  const [bannerSeq, setBannerSeq] = useState<number | null>(null)
+  useEffect(() => {
+    if (!lastEvent || Date.now() - lastEvent.at > 1800) return
+    setBannerSeq(lastEvent.seq)
+    const id = setTimeout(() => setBannerSeq(null), 1700)
+    return () => clearTimeout(id)
+  }, [lastEvent])
 
   // Perspektiv: i AI-läge är du alltid p1; i 2P-läge den vars tur det är.
   const myId: PlayerId = mode === 'vsAi' ? 'p1' : current
@@ -108,7 +119,7 @@ export function GameScreen() {
       </div>
 
       {/* Händelsebanner */}
-      {bannerText && (
+      {bannerText && bannerSeq === lastEvent?.seq && (
         <div key={lastEvent!.seq} className="pointer-events-none fixed inset-x-0 top-16 z-40 flex justify-center">
           <div
             className={`banner-pop glass px-6 py-2 text-xl font-black tracking-wider sm:text-2xl ${

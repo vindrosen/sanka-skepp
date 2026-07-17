@@ -8,7 +8,7 @@ function FxImage({ name, className }: { name: string; className: string }) {
   if (failed) return null
   return (
     <img
-      src={asset(`${name}.png`)}
+      src={asset(`${name}.webp`)}
       alt=""
       aria-hidden
       draggable={false}

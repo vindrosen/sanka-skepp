@@ -10,7 +10,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['assets/generated/*.png'],
+      includeAssets: ['assets/generated/*.webp'],
       manifest: {
         name: 'Sänka Skepp – Battle at Sea',
         short_name: 'Sänka Skepp',

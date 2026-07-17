@@ -1,3 +1,4 @@
+import { asset } from '../../assets'
 import { ACHIEVEMENTS } from '../../state/achievements'
 import { useTranslation } from '../../i18n/useTranslation'
 import { useGame } from '../../state/gameStore'
@@ -45,6 +46,9 @@ export function ResultScreen() {
 
   return (
     <div className="flex min-h-full flex-1 items-center justify-center p-4">
+      {!positive && (
+        <div className="screen-photo" style={{ backgroundImage: `url(${asset('bg-storm.webp')})` }} aria-hidden />
+      )}
       <div className="glass panel-in w-full max-w-sm overflow-hidden">
         <div className={`p-6 text-center ${positive ? '' : 'saturate-75'}`}>
           <GameIcon
