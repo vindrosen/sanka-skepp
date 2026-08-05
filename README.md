@@ -61,6 +61,24 @@ Råbilderna ligger i `assets/generated/` (ej i git); de optimerade i
 `public/assets/generated/`. Knappar, paneler, rutnät och markörer ritas i
 CSS för skärpa och responsivitet.
 
+## Adress och mätning
+
+Spelet ligger på <https://everydayapps.se/app/sanka-skepp/>. Sub-pathen kommer
+från `VITE_SITE_URL` — `vite.config.ts` härleder Vites `base` ur dess pathname,
+så origin och prefix aldrig kan drifta isär. Bygg mot en annan adress med
+
+```bash
+VITE_SITE_URL=https://example.test/nagon/path npm run build
+```
+
+Besök räknas med [Umami](https://umami.is) på
+`analytics.erlandsson.online`, men bara när `VITE_UMAMI_URL` och
+`VITE_UMAMI_WEBSITE_ID` är satta vid bygget — ett lokalt bygge blir alltså helt
+osparat. Umami sätter inga kakor, lagrar ingen IP-adress och bygger ingen profil
+över sajter. Spelets egen data (statistik, prestationer, inställningar) stannar
+i webbläsarens LocalStorage under nycklarna `sankaskepp:*` och lämnar aldrig
+enheten.
+
 ## Designspec
 
 Se [docs/superpowers/specs/2026-07-17-sanka-skepp-design.md](docs/superpowers/specs/2026-07-17-sanka-skepp-design.md).

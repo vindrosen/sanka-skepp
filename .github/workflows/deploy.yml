@@ -25,7 +25,12 @@ jobs:
       # npm install (inte npm ci) – låsfilen är skapad på Windows och
       # plattformsspecifika sharp-paket gör ci instabilt i Linux-CI.
       - run: npm install --no-fund --no-audit
+      # Vites `base` härleds ur VITE_SITE_URL. Defaultvärdet i vite.config.ts
+      # är everydayapps.se-adressen, så Pages-bygget måste peka ut sin egen.
+      # Umami-variablerna lämnas osatta: mätningen hör till everydayapps.se.
       - run: npm run build
+        env:
+          VITE_SITE_URL: https://vindrosen.github.io/sanka-skepp
       - uses: actions/configure-pages@v5
         with:
           enablement: true

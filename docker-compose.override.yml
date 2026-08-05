@@ -4,7 +4,10 @@ services:
     labels:
       uptime.enable: "true"
       uptime.name: "Sänka Skepp"
-      uptime.url: "https://sankaskepp.erlandsson.online"
+      uptime.url: "https://everydayapps.se/app/sanka-skepp/"
       uptime.type: "http"
       uptime.group: "Applications"
       uptime.tags: "Applications,Docker"
+      uptime.origin.url: "http://172.22.0.1:3011/app/sanka-skepp/"
+      # Resurssökväg, inte canonical — den bär prefixet som bygget faktiskt fick.
+      uptime.origin.keyword: "/app/sanka-skepp/assets/"

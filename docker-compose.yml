@@ -1,6 +1,13 @@
 services:
   sanka-skepp:
-    build: .
+    build:
+      context: .
+      # Defaultvärdena står här och inte i en .env på servern, så att en ren
+      # klon plus `docker compose up -d --build` bygger rätt sajt.
+      args:
+        VITE_SITE_URL: ${VITE_SITE_URL:-https://everydayapps.se/app/sanka-skepp}
+        VITE_UMAMI_URL: ${VITE_UMAMI_URL:-https://analytics.erlandsson.online}
+        VITE_UMAMI_WEBSITE_ID: ${VITE_UMAMI_WEBSITE_ID:-b7d11160-b03f-4273-b999-5f917c1f205a}
 
     image: sanka-skepp:latest
 
@@ -15,7 +22,9 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
 
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1"]
+      # Sökordet är en resurssökväg, inte canonical: hittas den inte har bygget
+      # inte fått prefixet och containern ska aldrig bli healthy.
+      test: ["CMD-SHELL", "wget -qO- http://localhost/app/sanka-skepp/ | grep -q /app/sanka-skepp/assets/"]
       interval: 30s
       timeout: 10s
       retries: 3
