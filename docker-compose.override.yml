@@ -1,0 +1,10 @@
+# Uptime Kuma auto-monitoring — discovered by the reconciler from these labels.
+services:
+  sanka-skepp:
+    labels:
+      uptime.enable: "true"
+      uptime.name: "Sänka Skepp"
+      uptime.url: "https://sankaskepp.erlandsson.online"
+      uptime.type: "http"
+      uptime.group: "Applications"
+      uptime.tags: "Applications,Docker"
