@@ -56,6 +56,12 @@ interface GameStore {
   placingPlayer: PlayerId
   winner: PlayerId | null
   aiThinking: boolean
+  /**
+   * True från att ett skott avlossats tills turen faktiskt lämnat spelaren.
+   * Utan den kan man klicka vidare på nya rutor under nedslagsanimationen
+   * och få flera skott i rad (och lika många AI-turer köade).
+   */
+  shotPending: boolean
   lastEvent: LastEvent | null
   matchStart: number
   /** Matchens längd i ms, satt när matchen avgörs (för resultatskärmen). */
@@ -193,7 +199,7 @@ export const useGame = create<GameStore>((set, get) => {
         set({ aiThinking: false })
         finishMatch('p2')
       } else {
-        later(() => set({ current: 'p1', aiThinking: false }), delays().turnSwitch)
+        later(() => set({ current: 'p1', aiThinking: false, shotPending: false }), delays().turnSwitch)
       }
     }, delays().aiAim)
   }
@@ -211,6 +217,7 @@ export const useGame = create<GameStore>((set, get) => {
     placingPlayer: 'p1',
     winner: null,
     aiThinking: false,
+    shotPending: false,
     lastEvent: null,
     matchStart: 0,
     matchDurationMs: 0,
@@ -238,6 +245,7 @@ export const useGame = create<GameStore>((set, get) => {
         placingPlayer: 'p1',
         winner: null,
         aiThinking: false,
+        shotPending: false,
         lastEvent: null,
         newAchievements: [],
         screen: 'placement',
@@ -255,6 +263,7 @@ export const useGame = create<GameStore>((set, get) => {
         placingPlayer: 'p1',
         winner: null,
         aiThinking: false,
+        shotPending: false,
         lastEvent: null,
         newAchievements: [],
         screen: 'placement',
@@ -338,19 +347,21 @@ export const useGame = create<GameStore>((set, get) => {
       if (s.handoverNext === 'placement') {
         set({ placingPlayer: 'p2', screen: 'placement' })
       } else {
-        set({ current: s.handoverTarget, screen: 'game' })
+        set({ current: s.handoverTarget, screen: 'game', shotPending: false })
       }
     },
 
     fire: (row, col) => {
       const s = get()
-      if (s.phase !== 'battle' || s.aiThinking || s.screen !== 'game') return
+      if (s.phase !== 'battle' || s.aiThinking || s.shotPending || s.screen !== 'game') return
       if (s.mode === 'vsAi' && s.current !== 'p1') return
       const targetId: PlayerId = s.current === 'p1' ? 'p2' : 'p1'
       if (alreadyFired(s.players[targetId].board, row, col)) {
         sound.play('error')
         return
       }
+      // Ett skott per tur: låst tills AI:n svarat eller nästa spelare tagit över.
+      set({ shotPending: true })
       sound.play('fire')
       const attacker = s.current
       const outcome = resolveShot(attacker, row, col)
@@ -393,7 +404,7 @@ export const useGame = create<GameStore>((set, get) => {
         const stats = useStats.getState().recordMatch(summary)
         useAchievements.getState().evaluate(stats, summary)
       }
-      set({ screen: 'menu', phase: 'placement', winner: null, aiThinking: false, lastEvent: null })
+      set({ screen: 'menu', phase: 'placement', winner: null, aiThinking: false, shotPending: false, lastEvent: null })
     },
   }
 })

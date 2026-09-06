@@ -46,6 +46,7 @@ export function GameScreen() {
   const current = useGame((s) => s.current)
   const phase = useGame((s) => s.phase)
   const aiThinking = useGame((s) => s.aiThinking)
+  const shotPending = useGame((s) => s.shotPending)
   const lastEvent = useGame((s) => s.lastEvent)
   const fire = useGame((s) => s.fire)
   const abandonMatch = useGame((s) => s.abandonMatch)
@@ -69,6 +70,9 @@ export function GameScreen() {
   const enemyBoard = players[enemyId].board
 
   const myTurn = phase === 'battle' && current === myId && !aiThinking
+  // Brädet slutar ta emot klick direkt vid skottet – turen är kvar hos
+  // spelaren under nedslaget, men skottet är redan förbrukat.
+  const canFire = myTurn && !shotPending
 
   const playerName = (id: PlayerId) =>
     mode === 'vsAi' ? (id === 'p1' ? t('you') : t('computer')) : id === 'p1' ? t('player1') : t('player2')
@@ -147,7 +151,7 @@ export function GameScreen() {
             <Board
               board={enemyBoard}
               revealSunk
-              interactive={myTurn}
+              interactive={canFire}
               onCellClick={fire}
               lastEvent={lastEvent && lastEvent.target === enemyId ? lastEvent : null}
             />
