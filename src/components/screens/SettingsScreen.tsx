@@ -116,6 +116,12 @@ export function SettingsScreen() {
             </div>
           ))}
         </div>
+        <a
+          href="kontakt.html"
+          className="mt-3 block text-center text-sm font-semibold text-[var(--muted)] hover:text-[var(--text)]"
+        >
+          {t('settingsContact')}
+        </a>
       </div>
     </div>
   )

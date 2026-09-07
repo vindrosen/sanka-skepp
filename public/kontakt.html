@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="index, follow">
+<title>Kontakt</title>
+<meta name="description" content="Samarbeten, förbättringsförslag, felrapporter eller annat – skriv några rader, eller mejla direkt.">
+
+<!-- MALL. Kopiera in i appen och ersatt sanka-skepp med appens slug overallt
+     (data-app och mejladressen). Adressen fungerar direkt: erlandsson.online
+     har catch-all mot min inkorg, sa <slug>@erlandsson.online kraver ingen
+     ny regel - men kan styras om per app nar som helst.
+     Inga beroenden. Ärver appens CSS-variabler (--text, --card, --border,
+     --accent) och faller tillbaka på egna värden i både ljust och mörkt läge. -->
+
+<style>
+  .kf {
+    --kf-text: inherit;
+    --kf-svag: var(--text-muted, #5c6070);
+    --kf-ram: var(--border, rgba(128,128,128,.35));
+    --kf-kort: var(--card, transparent);
+    --kf-botten: var(--bg, #f7f8fa);
+    --kf-accent: var(--accent, #2f6bff);
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 3rem;
+    color: var(--kf-text);
+    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    .kf {
+      --kf-text: var(--text, #eceef3);
+      --kf-svag: var(--text-muted, #9ba1b0);
+      --kf-ram: var(--border, #333845);
+      --kf-kort: var(--card, #1b1e26);
+      --kf-botten: var(--bg, #121419);
+      --kf-accent: var(--accent, #6f9bff);
+    }
+  }
+
+  .kf h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 0 .6rem; letter-spacing: -.01em; }
+  .kf .kf-ingress { color: var(--kf-svag); margin: 0 0 1.75rem; }
+
+  /* Direktadressen. Robert vill ha bade mejl och formular - mejlen forst,
+     for den som hellre skriver i sin egen klient an i ett textfalt. */
+  .kf-mejl {
+    display: flex; align-items: center; gap: .9rem;
+    padding: .9rem 1.1rem; margin-bottom: 2rem;
+    border: 1px solid var(--kf-ram); border-radius: .75rem;
+    background: var(--kf-kort); text-decoration: none; color: inherit;
+  }
+  .kf-mejl:hover { border-color: var(--kf-accent); }
+  .kf-mejl svg { flex: 0 0 auto; color: var(--kf-accent); }
+  .kf-mejl b { display: block; font-size: .9rem; }
+  .kf-mejl span { display: block; color: var(--kf-svag); font-size: .9rem; word-break: break-all; }
+
+  .kf-avdelare {
+    display: flex; align-items: center; gap: 1rem;
+    color: var(--kf-svag); font-size: .8rem; text-transform: uppercase;
+    letter-spacing: .08em; margin-bottom: 1.5rem;
+  }
+  .kf-avdelare::before, .kf-avdelare::after {
+    content: ""; flex: 1; height: 1px; background: var(--kf-ram);
+  }
+
+  .kf label { display: block; font-weight: 600; margin: 1rem 0 .35rem; }
+  .kf .kf-hjalp { display: block; font-weight: 400; color: var(--kf-svag); font-size: .875rem; }
+  .kf textarea, .kf input[type="email"], .kf select {
+    width: 100%; box-sizing: border-box; padding: .7rem .85rem;
+    border: 1px solid var(--kf-ram); border-radius: .55rem;
+    background: var(--kf-kort); color: inherit; font: inherit;
+  }
+  .kf textarea { min-height: 9.5rem; resize: vertical; }
+  .kf textarea:focus-visible, .kf input:focus-visible, .kf select:focus-visible {
+    outline: 2px solid var(--kf-accent); outline-offset: 1px;
+  }
+  .kf button {
+    margin-top: 1.35rem; padding: .72rem 1.5rem; border: 0; border-radius: .55rem;
+    background: var(--kf-accent); color: #fff; font: inherit; font-weight: 600;
+    cursor: pointer;
+  }
+  .kf button[disabled] { opacity: .55; cursor: progress; }
+
+  /* Honeypot. Far inte doljas med display:none - en del bottar hoppar over
+     just sadana falt, och skarmlasare ska anda ga forbi det. */
+  .kf-fälla { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+  .kf-status { margin-top: 1rem; padding: .75rem 1rem; border-radius: .55rem; border: 1px solid var(--kf-ram); }
+  .kf-status:empty { display: none; }
+  .kf-status[data-lage="fel"] { border-color: #d93a3a; color: #d93a3a; }
+  .kf-status[data-lage="klart"] { border-color: #1f9d4d; color: #1f9d4d; }
+
+  /* Avsandarblocket. RE-loggan har en mork halo inbakad i PNG:en och maste
+     sta pa mork botten - darav brickan, i bada teman. */
+  .kf-fot {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem;
+    margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--kf-ram);
+    font-size: .875rem; color: var(--kf-svag);
+  }
+  .kf-fot a { display: inline-flex; align-items: center; gap: .6rem; color: inherit; text-decoration: none; }
+  .kf-fot a:hover { color: var(--kf-text); }
+  .kf-bricka {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: #0b0d12; border-radius: .5rem; padding: .3rem .5rem;
+  }
+  .kf-bricka img { display: block; height: 1.6rem; width: auto; }
+  .kf-fot svg { display: block; border-radius: .45rem; }
+  .kf-fot b { display: block; color: var(--kf-text); font-size: .9rem; }
+
+  /* Nedtoning gors med opacity, inte med en farg. En reservfarg maste gissa
+     om appen ar ljus eller mork, och gissar den fel blir texten osynlig -
+     precis det som hande i Kostcirkelns morka lage. */
+  .kf-avdelare { opacity: .7; }
+  .kf-hjalp { opacity: .72; }
+  .kf-mejl b, .kf-fot b { opacity: 1; }
+  .kf-mejl > span > span, .kf-fot small { display: block; opacity: .72; }
+</style>
+</head>
+<body>
+
+<main class="kf">
+  <h1>Kontakt</h1>
+  <p class="kf-ingress">
+    Samarbeten, förbättringsförslag, en siffra som ser fel ut eller något helt
+    annat – hör av dig. Allt landar direkt hos mig: ingen supportportal, inget
+    ärendenummer.
+  </p>
+
+  <a class="kf-mejl" href="mailto:sanka-skepp@erlandsson.online">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+      <rect x="2" y="4" width="20" height="16" rx="2.5"/><path d="m2.5 6.5 9.5 6.5 9.5-6.5"/>
+    </svg>
+    <span>
+      <b>Mejla direkt</b>
+      <span>sanka-skepp@erlandsson.online</span>
+    </span>
+  </a>
+
+  <p class="kf-avdelare">eller skriv här</p>
+
+  <form id="kf-form" data-app="sanka-skepp" novalidate>
+    <label for="kf-amne">Vad gäller det?</label>
+    <select id="kf-amne" name="amne">
+      <option value="felrapport">Något är fel</option>
+      <option value="forslag">Förbättringsförslag</option>
+      <option value="samarbete">Samarbete</option>
+      <option value="fraga">Fråga</option>
+      <option value="annat">Annat</option>
+    </select>
+
+    <label for="kf-meddelande">
+      Ditt meddelande
+      <span class="kf-hjalp">Gäller det ett fel: beskriv gärna vad du gjorde och vad du förväntade dig.</span>
+    </label>
+    <textarea id="kf-meddelande" name="meddelande" maxlength="5000" required></textarea>
+
+    <label for="kf-epost">
+      Din e-postadress
+      <span class="kf-hjalp">Frivillig. Används bara för att svara dig.</span>
+    </label>
+    <input id="kf-epost" name="epost" type="email" autocomplete="email" maxlength="200">
+
+    <div class="kf-fälla" aria-hidden="true">
+      <label for="kf-webbplats">Lämna det här fältet tomt</label>
+      <input id="kf-webbplats" name="webbplats" type="text" tabindex="-1" autocomplete="off">
+    </div>
+
+    <button type="submit">Skicka</button>
+    <p class="kf-status" role="status" aria-live="polite"></p>
+  </form>
+
+  <footer class="kf-fot">
+    <a href="https://erlandsson.online/">
+      <span class="kf-bricka">
+        <img src="https://kontakt.erlandsson.online/erlandsson.png" alt="" aria-hidden="true" width="145" height="72" loading="lazy">
+      </span>
+      <span><b>En del av erlandsson.online</b><small>Byggt och drivet av Robert Erlandsson</small></span>
+    </a>
+    <a href="https://everydayapps.se/">
+      <svg width="30" height="30" viewBox="0 0 40 40" aria-hidden="true">
+        <defs><linearGradient id="kf-eda" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#8b6dff"/><stop offset="100%" stop-color="#5b34f0"/>
+        </linearGradient></defs>
+        <rect width="40" height="40" rx="11" fill="url(#kf-eda)"/>
+        <path d="M20 9.5 30 15l-10 5.5L10 15z" fill="#fff"/>
+        <path d="M10 20.2 20 25.7l10-5.5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".78"/>
+      </svg>
+      <span><b>EveryDayApps</b><small>Del av appsamlingen</small></span>
+    </a>
+  </footer>
+</main>
+
+<script>
+(() => {
+  const ENDPOINT = 'https://kontakt.erlandsson.online/'
+  const form = document.getElementById('kf-form')
+  const status = form.querySelector('.kf-status')
+  const knapp = form.querySelector('button')
+
+  const visa = (text, läge) => {
+    status.textContent = text
+    status.dataset.lage = läge
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    if (form.meddelande.value.trim().length < 3) {
+      visa('Skriv några ord om vad som är fel.', 'fel')
+      form.meddelande.focus()
+      return
+    }
+
+    knapp.disabled = true
+    visa('Skickar …', '')
+
+    const data = new URLSearchParams(new FormData(form))
+    data.set('app', form.dataset.app)
+    data.set('sida', location.href)
+
+    try {
+      const svar = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: data,
+      })
+      const r = await svar.json()
+      if (!r.ok) throw new Error(r.fel || 'Något gick fel.')
+      form.reset()
+      visa('Tack! Meddelandet är skickat.', 'klart')
+    } catch (err) {
+      visa(`${err.message} Du kan också mejla ${form.dataset.app}@erlandsson.online direkt.`, 'fel')
+    } finally {
+      knapp.disabled = false
+    }
+  })
+})()
+</script>
+
+</body>
+</html>
