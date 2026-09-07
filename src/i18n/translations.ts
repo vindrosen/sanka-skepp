@@ -130,6 +130,10 @@ const sv = {
   on: 'På',
   off: 'Av',
   back: 'Tillbaka',
+
+  // Installation
+  installApp: 'Installera appen',
+  installIos: 'Installera: tryck på Dela och välj ”Lägg till på hemskärmen”.',
 } as const
 
 export type TranslationKey = keyof typeof sv
@@ -253,6 +257,9 @@ const en: Record<TranslationKey, string> = {
   on: 'On',
   off: 'Off',
   back: 'Back',
+
+  installApp: 'Install the app',
+  installIos: 'To install: tap Share and choose ”Add to Home Screen”.',
 }
 
 export const translations: Record<Language, Record<TranslationKey, string>> = { sv, en }

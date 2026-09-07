@@ -4,6 +4,7 @@ import type { Difficulty } from '../../game/types'
 import { useTranslation } from '../../i18n/useTranslation'
 import { useGame } from '../../state/gameStore'
 import { GameIcon } from '../ui/GameIcon'
+import { InstalleraKnapp } from '../ui/InstalleraKnapp'
 import { NeonButton } from '../ui/NeonButton'
 
 /** Startsidan: hjältebild, titel och huvudmenyn. */
@@ -66,6 +67,7 @@ export function MenuScreen() {
               {t('menuAchievements')}
             </NeonButton>
           </div>
+          <InstalleraKnapp />
         </div>
       </div>
 
